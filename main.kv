@@ -1,0 +1,397 @@
+#: import FadeTransiton kivy.uix.screenmanager.FadeTransition
+#:import C kivy.utils.get_color_from_hex
+CAESDApp:
+    transition: FadeTransiton()
+    LaunchPage:
+    CctvPage:
+    LanDistributionPage:
+    PowerPage:
+    IlluminationPage:
+
+<FormLabel@Label>:
+    font_size: self.height/2.5
+<FormInput@TextInput>:
+    write_tab: False
+    multiline: False
+    keyboard_suggestions: False
+    allow_copy: False
+    font_size: self.height/1.8
+    size_hint: (0.8, 1)
+    color: 0, 0, 0, 1
+    #background_color:  0.2,0.2,0.4,0.4
+    #border_color: 0,0,0,1
+    cursor_color: [0,0,0,1]
+    cursor_height: self.height/1.8
+    halign: 'center'
+    valign: 'middle'
+
+<LaunchPage>:
+    name: "launch_screen"
+    canvas.before:
+        Color:
+            rgba: 0.2, 0.2, 1, 0.7
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: "vertical"
+        padding: 50
+        height: "450dp"
+        size_hint_y: None
+        pos_hint: {'center_x':.5, 'center_y': .5}
+        Image:
+            source: 'unaab.png'
+        Label:
+            text: "Computer Aided Electrical Services Design"
+            font_size: 60
+            color: 0.5, 1, 1, 1
+            size_hint_y: None
+            text_size: self.width, None
+            height: self.texture_size[1]
+            halign: 'center'
+        Label:
+            text: "(Power Distribution | Illumination | LAN Cabling | CCTV Design)"
+            font_size: 25
+            color: 0.5, 1, 1, 1
+            text_size: self.width, None
+            height: self.texture_size[1]
+        Label:
+            text: "APANTAKU, Ayomide 20141890"
+            font_size: 20
+        Button:
+            text: "APPLICATION"
+            font_size: 25
+            background_color: 0.5, 1, 1, 1
+            on_press: root.manager.current = 'cctv_screen'
+
+<CctvPage>:
+    name: 'cctv_screen'
+    orientation: 'vertical'
+    dropManufacturer: drop_manufacturer
+    dropModel: drop_model
+    dropSensor: drop_sensor
+    distFromCamera: distance_from_camera
+    sceneWidth: scene_width
+    sceneHeight: scene_height
+    sceneArea: scene_area
+    focalLength: focal_length
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: 0.06
+            pos_hint: {'top': 1}
+            padding: 0, 0, 15, 0
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Button:
+                size_hint_x: 0.08
+                text: '<'
+                font_size: self.height/1.5
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'launch_screen'
+            Label:
+                text: 'CCTV Calculator'
+                text_size: self.size
+                color: 0, 0, 0, 1
+                halign: 'left'
+                valign: 'middle'
+            Button:
+                size_hint_x: 0.2
+                text: 'CCTV'
+                color: 0, 0, 0, 1
+                background_color: 0.2, 0.2, 1, 0.7
+                on_press: root.manager.current = 'cctv_screen'
+            Button:
+                size_hint_x: 0.2
+                text: 'W/LAN'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'wlan_screen'
+            Button:
+                size_hint_x: 0.2
+                text: 'Distribution'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'power_screen'
+            Button:
+                size_hint_x: 0.2
+                text: 'Illumination'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'illumination_screen'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_x: 0.7
+            pos_hint: {'center_x':.5, 'center_y': .5}
+            padding: 0,20,0,0
+            StackLayout:
+                Spinner:
+                #Display a button for manufacturer
+                    id: drop_manufacturer
+                    text: 'Manufacturer'
+                    font_size: self.height/2.5
+                    size_hint: (1, 0.09)
+                    values: ['ABUS', 'ACTI', 'ActiveCam', 'Arecont', 'Avigilon', 'Axis', 'Beward', 'BOLID', 'BOSCH', 'CONVISION', 'Dahua', 'Dallmeier', 'Digital Watchdog', 'Divisat', 'DSSL', 'DVTEL', 'Eneo', 'EVS', 'Evidence', 'FLIR', 'GeoVison']
+                    background_color: 0.5, 0.4, 0.5, 1
+                    on_text:
+                        root.selectedManufacturer()
+                    on_press:
+                        drop_model.text = 'Model'
+                        drop_sensor.text = 'No Model Selected'
+                BoxLayout:
+                    size_hint: (1, 0.09)
+                    padding: 0,5,0,5
+                    Spinner:
+                    #Display a button for nodel
+                        id: drop_model
+                        text: 'Model'
+                        font_size: self.height/2
+                        values: []
+                        background_color: 0.5, 0.4, 0.5, 1
+                        on_text:
+                            root.selectedModel()
+                    FormLabel:
+                        id: drop_sensor
+                        text: 'No Model Selected'
+                        color: 0, 0, 0, 1
+                BoxLayout:
+                    size_hint: (1, 0.09)
+                    padding: 0,5,0,5
+                    FormLabel:
+                        text: 'Distance from the Camera'
+                        color: 0, 0, 0, 1
+                    FormInput:
+                        id: distance_from_camera
+                        on_text: root.calculateSceneDimensions('distance', distance_from_camera.text)
+                BoxLayout:
+                    size_hint: (1, 0.09)
+                    padding: 0,5,0,5
+                    FormLabel:
+                        text: 'Scene Width'
+                        color: 0, 0, 0, 1
+                    FormInput:
+                        id: scene_width
+                        on_text: root.calculateSceneDimensions('width', scene_width.text)
+                BoxLayout:
+                    size_hint: (1, 0.09)
+                    padding: 0,5,0,5
+                    FormLabel:
+                        text: 'Scene Height'
+                        color: 0, 0, 0, 1
+
+                    FormInput:
+                        id: scene_height
+                        on_text: root.calculateSceneDimensions('height', scene_height.text)
+                BoxLayout:
+                    size_hint: (1, 0.09)
+                    padding: 0,5,0,5
+                    FormLabel:
+                        text: 'Focal Length'
+                        color: 0, 0, 0, 1
+                    FormInput:
+                        id: focal_length
+                BoxLayout:
+                    size_hint: (1, 0.09)
+                    padding: 0,5,0,5
+                    FormLabel:
+                        text: 'Scene Area'
+                        color: 0, 0, 0, 1
+                    FormInput:
+                        id: scene_area
+
+<LanDistributionPage>:
+    name: 'wlan_screen'
+    orientation: 'vertical'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: 0.06
+            pos_hint: {'top': 1}
+            padding: 0, 0, 15, 0
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Button:
+                size_hint_x: 0.08
+                text: '<'
+                font_size: self.height/1.5
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'launch_screen'
+            Label:
+                text: 'W/LAN Calculator'
+                text_size: self.size
+                color: 0, 0, 0, 1
+                halign: 'left'
+                valign: 'middle'
+            Button:
+                size_hint_x: 0.2
+                text: 'CCTV'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'cctv_screen'
+            Button:
+                size_hint_x: 0.2
+                text: 'W/LAN'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0.5
+                on_press: root.manager.current = 'wlan_screen'
+            Button:
+                size_hint_x: 0.2
+                text: 'Distribution'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'power_screen'
+            Button:
+                size_hint_x: 0.2
+                text: 'Illumination'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'illumination_screen'
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: 'Under Development'
+                color: 0, 0, 0, 1
+
+<PowerPage>:
+    name: 'power_screen'
+    orientation: 'vertical'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: 0.06
+            pos_hint: {'top': 1}
+            padding: 0, 0, 15, 0
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Button:
+                size_hint_x: 0.08
+                text: '<'
+                font_size: self.height/1.5
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'launch_screen'
+            Label:
+                text: 'Power Distribution'
+                text_size: self.size
+                color: 0, 0, 0, 1
+                halign: 'left'
+                valign: 'middle'
+            Button:
+                size_hint_x: 0.2
+                text: 'CCTV'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'cctv_screen'
+            Button:
+                size_hint_x: 0.2
+                text: 'W/LAN'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'wlan_screen'
+            Button:
+                size_hint_x: 0.2
+                text: 'Distribution'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0.5
+                on_press: root.manager.current = 'power_screen'
+            Button:
+                size_hint_x: 0.2
+                text: 'Illumination'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'illumination_screen'
+        BoxLayout:
+            orientation: 'horizontal'
+
+<IlluminationPage>:
+    name: 'illumination_screen'
+    orientation: 'vertical'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: 0.06
+            pos_hint: {'top': 1}
+            padding: 0, 0, 15, 0
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Button:
+                size_hint_x: 0.08
+                text: '<'
+                font_size: self.height/1.5
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'launch_screen'
+            Label:
+                text: 'Illumination'
+                text_size: self.size
+                color: 0, 0, 0, 1
+                halign: 'left'
+                valign: 'middle'
+            Button:
+                size_hint_x: 0.2
+                text: 'CCTV'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'cctv_screen'
+            Button:
+                size_hint_x: 0.2
+                text: 'W/LAN'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'wlan_screen'
+            Button:
+                size_hint_x: 0.2
+                text: 'Distribution'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0
+                on_press: root.manager.current = 'power_screen'
+            Button:
+                size_hint_x: 0.2
+                text: 'Illumination'
+                color: 0, 0, 0, 1
+                background_color: 1, 1, 1, 0.5
+                on_press: root.manager.current = 'illumination_screen'
+        BoxLayout:
+            orientation: 'horizontal'
